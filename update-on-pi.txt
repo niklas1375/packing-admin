@@ -1,0 +1,4 @@
+# cd to directory
+git pull
+docker build -t packing-admin .
+docker service update --force --image packing-admin:latest localstack_packing-admin
