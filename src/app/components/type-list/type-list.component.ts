@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { PackingListType } from '../../types/packing-list-type';
 import { RouterLink } from '@angular/router';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-type-list',
@@ -16,9 +17,13 @@ import { RouterLink } from '@angular/router';
 })
 export class TypeListComponent {
   packinglistTypes$!: Observable<PackingListType[]>;
-  constructor(private packingBackend: PackingHelperService) {}
+  constructor(
+    private packingBackend: PackingHelperService,
+    private appService: AppService
+  ) {}
 
   ngOnInit(): void {
+    this.appService.setTitle('Packlisten verwalten');
     this.packinglistTypes$ = this.packingBackend.getPackingListTypes();
   }
 }

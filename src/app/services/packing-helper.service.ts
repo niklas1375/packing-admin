@@ -3,6 +3,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { PackingListType } from '../types/packing-list-type';
 import { HttpClient } from '@angular/common/http';
 import { ValueHelpPackinglist } from '../types/value-help-packinglist';
+import { PackingList } from '../types/packing-list';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,16 @@ export class PackingHelperService {
       .pipe(
         catchError(
           this.handleError<ValueHelpPackinglist[]>(`get /${typePath}`, [])
+        )
+      );
+  }
+
+  getPackingListWithItems(listId: string): Observable<PackingList> {
+    return this.http
+      .get<PackingList>(this.BASE_PATH + "/packinglists/" + listId + "?expand=items")
+      .pipe(
+        catchError(
+          this.handleError<PackingList>(`get /packinglists/${listId}`, undefined)
         )
       );
   }

@@ -7,26 +7,32 @@ import { PackingitemDetailsComponent } from './components/packingitem-details/pa
 export const routes: Routes = [
   {
     path: '',
+    title: 'Packlistentypen',
     component: TypeListComponent,
   },
   {
     path: 'types',
+    title: 'Packlistentypen',
     component: TypeListComponent,
   },
   {
     path: 'types/:type',
+    title: 'Packlisten für Typ',
     component: PackinglistListComponent,
   },
   {
     path: 'packinglist/:listid',
+    title: 'Packlistendetails',
     component: PackinglistDetailsComponent,
   },
   {
     path: 'packinglist/:listid/items/:itemid',
+    title: 'Packlistendetails',
     component: PackingitemDetailsComponent,
   },
   {
     path: '**',
+    title: 'Packlisten verwalten',
     component: TypeListComponent,
   },
 ];

@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { ValueHelpPackinglist } from '../../types/value-help-packinglist';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-packinglist-list',
@@ -19,7 +20,8 @@ export class PackinglistListComponent {
   packingListType: string;
   constructor(
     private packingBackend: PackingHelperService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private appService: AppService
   ) {
     this.packingListType = '';
   }
@@ -30,5 +32,6 @@ export class PackinglistListComponent {
     this.packingLists$ = this.packingBackend.getPackingListsOfType(
       this.packingListType
     );
+    this.appService.setTitle(`Packlisten "${this.packingListType}"`);
   }
 }
