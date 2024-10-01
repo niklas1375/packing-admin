@@ -1,1 +1,13 @@
-<p>packinglist-list works!</p>
+<h2>Packlisten vom Typ {{ packingListType }}</h2>
+
+<mat-list>
+  @for (simplePackingList of (packingLists$ | async); track
+  simplePackingList.key) {
+  <mat-list-item>
+    <mat-icon matListItemIcon>chevron_right</mat-icon>
+    <a mat-list-item routerLink="/packinglist/{{ simplePackingList.key }}">{{
+      simplePackingList.name
+    }}</a>
+  </mat-list-item>
+  }
+</mat-list>
