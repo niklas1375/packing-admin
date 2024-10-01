@@ -25,4 +25,8 @@ export const routes: Routes = [
     path: 'packinglist/:listid/items/:itemid',
     component: PackingitemDetailsComponent,
   },
+  {
+    path: '**',
+    component: TypeListComponent,
+  },
 ];

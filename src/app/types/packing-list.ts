@@ -1,10 +1,9 @@
-import { PackingCategory } from './packing-category';
+import { PackingItem } from "./packing-item";
 
 export interface PackingList {
-  clothing: PackingCategory;
-  toiletries: PackingCategory;
-  gear: PackingCategory;
-  organisational: PackingCategory;
-  entertainment: PackingCategory;
-  other: PackingCategory;
+    id: string;
+    name: string;
+    type: string;
+    updated_at: string;
+    packingItems?: PackingItem[]
 }

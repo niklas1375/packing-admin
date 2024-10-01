@@ -2,6 +2,9 @@
 
 <mat-nav-list>
   @for (type of (packinglistTypes$ | async); track type.type) {
-  <a mat-list-item href="/types/{{type.type}}">{{ type.type }}</a>
+  <mat-list-item>
+    <mat-icon matListItemIcon>chevron_right</mat-icon>
+    <a mat-list-item routerLink="/types/{{ type.type }}">{{ type.type }}</a>
+  </mat-list-item>
   }
 </mat-nav-list>

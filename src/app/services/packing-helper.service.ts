@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { PackingListType } from '../types/packing-list-type';
 import { HttpClient } from '@angular/common/http';
+import { ValueHelpPackinglist } from '../types/value-help-packinglist';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,16 @@ export class PackingHelperService {
       .get<PackingListType[]>(this.BASE_PATH + '/listtypes')
       .pipe(
         catchError(this.handleError<PackingListType[]>(`get /listtypes`, []))
+      );
+  }
+
+  getPackingListsOfType(typePath: string): Observable<ValueHelpPackinglist[]> {
+    return this.http
+      .get<ValueHelpPackinglist[]>(this.BASE_PATH + "/" + typePath)
+      .pipe(
+        catchError(
+          this.handleError<ValueHelpPackinglist[]>(`get /${typePath}`, [])
+        )
       );
   }
 
