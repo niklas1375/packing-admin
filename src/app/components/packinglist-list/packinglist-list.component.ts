@@ -18,6 +18,15 @@ import { AppService } from '../../services/app.service';
 export class PackinglistListComponent {
   packingLists$!: Observable<ValueHelpPackinglist[]>;
   packingListType: string;
+  apiPathMappings = {
+    accomodation: 'accomodation',
+    activity: 'activities',
+    basics: 'basics',
+    transport: 'transport',
+    triptype: 'triptypes',
+    weather: 'weather',
+  };
+
   constructor(
     private packingBackend: PackingHelperService,
     private route: ActivatedRoute,
@@ -30,7 +39,7 @@ export class PackinglistListComponent {
     const urlSegments = this.route.snapshot.url;
     this.packingListType = urlSegments[urlSegments.length - 1 || 0].path;
     this.packingLists$ = this.packingBackend.getPackingListsOfType(
-      this.packingListType
+      (this.apiPathMappings as any)[this.packingListType]
     );
     this.appService.setTitle(`Packlisten "${this.packingListType}"`);
   }
