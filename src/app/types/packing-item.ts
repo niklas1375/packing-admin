@@ -1,5 +1,7 @@
 export interface PackingItem {
   name: string;
+  item_id: string;
+  category: string;
   dayMultiplier?: number;
   dayThreshold?: number;
   relevantForWeather?: string[];

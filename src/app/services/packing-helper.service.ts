@@ -11,33 +11,40 @@ import { PackingList } from '../types/packing-list';
 export class PackingHelperService {
   private BASE_PATH = '/api';
   constructor(private http: HttpClient) {}
-
+  
   getPackingListTypes(): Observable<PackingListType[]> {
     return this.http
-      .get<PackingListType[]>(this.BASE_PATH + '/listtypes')
-      .pipe(
-        catchError(this.handleError<PackingListType[]>(`get /listtypes`, []))
-      );
+    .get<PackingListType[]>(this.BASE_PATH + '/listtypes')
+    .pipe(
+      catchError(this.handleError<PackingListType[]>(`get /listtypes`, []))
+    );
   }
-
+  
   getPackingListsOfType(typePath: string): Observable<ValueHelpPackinglist[]> {
     return this.http
-      .get<ValueHelpPackinglist[]>(this.BASE_PATH + "/" + typePath)
-      .pipe(
-        catchError(
-          this.handleError<ValueHelpPackinglist[]>(`get /${typePath}`, [])
-        )
-      );
+    .get<ValueHelpPackinglist[]>(this.BASE_PATH + "/" + typePath)
+    .pipe(
+      catchError(
+        this.handleError<ValueHelpPackinglist[]>(`get /${typePath}`, [])
+      )
+    );
   }
-
+  
   getPackingListWithItems(listId: string): Observable<PackingList> {
     return this.http
-      .get<PackingList>(this.BASE_PATH + "/packinglists/" + listId + "?expand=items")
-      .pipe(
-        catchError(
-          this.handleError<PackingList>(`get /packinglists/${listId}`, undefined)
-        )
-      );
+    .get<PackingList>(this.BASE_PATH + "/packinglists/" + listId + "?expand=items")
+    .pipe(
+      catchError(
+        this.handleError<PackingList>(`get /packinglists/${listId}`, undefined)
+      )
+    );
+  }
+  
+  updatePackingList(listid: string | undefined, value: any) {
+    throw new Error('Method not implemented.');
+  }
+  createPackingList(value: any) {
+    throw new Error('Method not implemented.');
   }
 
   /**
