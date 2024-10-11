@@ -7,11 +7,18 @@ import { ValueHelpPackinglist } from '../../types/value-help-packinglist';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AppService } from '../../services/app.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-packinglist-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatListModule, MatIconModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './packinglist-list.component.html',
   styleUrl: './packinglist-list.component.scss',
 })
@@ -42,5 +49,12 @@ export class PackinglistListComponent {
       (this.apiPathMappings as any)[this.packingListType]
     );
     this.appService.setTitle(`Packlisten "${this.packingListType}"`);
+  }
+
+  onPackingListDelete(_: MouseEvent, clickedList: ValueHelpPackinglist) {
+    if (!confirm(`Packliste ${clickedList.name} löschen?`)) return;
+    this.packingBackend.deletePackingList(clickedList.key).subscribe(() => {
+      window.location.reload();
+    });
   }
 }
