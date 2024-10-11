@@ -26,6 +26,11 @@ export const routes: Routes = [
     component: PackinglistDetailsComponent,
   },
   {
+    path: 'packinglist/new/:type',
+    title: 'Packliste erstellen',
+    component: PackinglistDetailsComponent,
+  },
+  {
     path: 'packinglist/:listid/items/:itemid',
     title: 'Packlistendetails',
     component: PackingitemDetailsComponent,
