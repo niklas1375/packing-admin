@@ -51,7 +51,7 @@ export class PackinglistListComponent {
     this.appService.setTitle(`Packlisten "${this.packingListType}"`);
   }
 
-  onPackingListDelete(_: MouseEvent, clickedList: ValueHelpPackinglist) {
+  onPackingListDelete(clickedList: ValueHelpPackinglist) {
     if (!confirm(`Packliste ${clickedList.name} löschen?`)) return;
     this.packingBackend.deletePackingList(clickedList.key).subscribe(() => {
       window.location.reload();
