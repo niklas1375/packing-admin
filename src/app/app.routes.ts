@@ -32,7 +32,12 @@ export const routes: Routes = [
   },
   {
     path: 'packinglist/:listid/items/:itemid',
-    title: 'Packlistendetails',
+    title: 'Packitemdetails',
+    component: PackingitemDetailsComponent,
+  },
+  {
+    path: 'packinglist/:listid/items/new/:category',
+    title: 'Packitem erstellen',
     component: PackingitemDetailsComponent,
   },
   {
