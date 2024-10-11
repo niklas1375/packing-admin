@@ -4,6 +4,7 @@ import { PackingListType } from '../types/packing-list-type';
 import { HttpClient } from '@angular/common/http';
 import { ValueHelpPackinglist } from '../types/value-help-packinglist';
 import { PackingList } from '../types/packing-list';
+import { PackingItem } from '../types/packing-item';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,8 @@ export class PackingHelperService {
     weather: 'weather',
   };
   constructor(private http: HttpClient) {}
+
+  // packing list methods
 
   getPackingListTypes(): Observable<PackingListType[]> {
     return this.http
@@ -53,7 +56,7 @@ export class PackingHelperService {
       );
   }
 
-  updatePackingList(listId: string, value: any) {
+  updatePackingList(listId: string, value: Partial<PackingList>) {
     return this.http
       .patch<PackingList>(this.BASE_PATH + '/packinglists/' + listId, value, {
         headers: {
@@ -62,14 +65,14 @@ export class PackingHelperService {
       })
       .pipe(
         catchError(
-          this.handleError<PackingList>(`post /packinglists`, undefined)
+          this.handleError<PackingList>(`patch /packinglists`, undefined)
         )
       );
   }
 
-  createPackingList(value: any) {
+  createPackingList(value: Partial<PackingList>) {
     const path =
-      this.BASE_PATH + '/' + (this.apiPathMappings as any)[value.type];
+      this.BASE_PATH + '/' + (this.apiPathMappings as any)[value.type!];
     return this.http
       .post<PackingList>(path, value, {
         headers: {
@@ -88,8 +91,49 @@ export class PackingHelperService {
       .delete(this.BASE_PATH + '/packinglists/' + listId)
       .pipe(
         catchError(
+          this.handleError(`delete /packinglists/${listId}`, undefined)
+        )
+      );
+  }
+
+  // packing item methods
+  updatePackingItemOnList(listId: string, itemId: string, value: Partial<PackingItem>) {
+    return this.http
+      .patch<PackingItem>(this.BASE_PATH + `/packinglists/${listId}/items/${itemId}`, value, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .pipe(
+        catchError(
+          this.handleError<PackingList>(`patch /packinglists/${listId}/items/${itemId}`, undefined)
+        )
+      );
+  }
+
+  createPackingItemForList(listId: string, value: Partial<PackingItem>) {
+    const path =
+      this.BASE_PATH + `/packinglists/${listId}/items`;
+    return this.http
+      .post<PackingItem>(path, value, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .pipe(
+        catchError(
+          this.handleError<PackingItem>(`post /packinglists/${listId}/items`, undefined)
+        )
+      );
+  }
+
+  deletePackingItemFromList(listId: string, itemId: string) {
+    return this.http
+      .delete(this.BASE_PATH + `/packinglists/${listId}/items/${itemId}`)
+      .pipe(
+        catchError(
           this.handleError(
-            `delete /packinglists/${listId}`,
+            `delete /packinglists/${listId}/items/${itemId}`,
             undefined
           )
         )
