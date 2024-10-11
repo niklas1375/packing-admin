@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <span>{{ title }}</span>
+  <span>{{ title$ | async }}</span>
 </mat-toolbar>
 <div class="mainApp">
   <router-outlet></router-outlet>

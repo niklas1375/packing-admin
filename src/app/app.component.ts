@@ -2,20 +2,20 @@ import { Component } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 import { AppService } from './services/app.service';
+import { AsyncPipe } from '@angular/common';
+import { delay, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatToolbar],
+  imports: [RouterOutlet, MatToolbar, AsyncPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title!: String;
+  title$!: Observable<String>;
 
-  constructor(private appService: AppService) {}
-
-  ngOnInit() {
-    this.appService.getTitle().subscribe((appTitle) => (this.title = appTitle));
+  constructor(private appService: AppService) {
+    this.title$ = this.appService.getTitle().pipe(delay(0));
   }
 }
