@@ -1,1 +1,193 @@
-<p>packingitem-details works!</p>
+@if(!loading){
+<mat-card class="packinglist-card">
+  <mat-card-header>
+    <mat-card-title>Packitemdetails</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" id="packingitemForm">
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label class="form-label">Name</label>
+            <input
+              matInput
+              formControlName="name"
+              class="form-control"
+              (change)="onChange()"
+            />
+            @if(submitted && f['name'].errors) {
+            <mat-error class="invalid-feedback">
+              @if(f['name'].hasError('required')) { Name is required }
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label class="form-label">Kategorie</label>
+            <mat-select
+              formControlName="category"
+              class="form-control"
+              (valueChange)="onChange()"
+            >
+              @for (category of categoryMapping; track category.key) {
+              <mat-option [value]="category.key">{{
+                category.name
+              }}</mat-option>
+              }
+            </mat-select>
+            @if(submitted && f['category'].errors) {
+            <mat-error class="invalid-feedback">
+              @if(f['category'].hasError('required')) { Name is required }
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label class="form-label">Tagesmultiplikator</label>
+            <input
+              matInput
+              formControlName="dayMultiplier"
+              class="form-control"
+              (change)="onChange()"
+              placeholder="Anzahl Tage X Multiplikator wird vor Item angegeben"
+            />
+            @if(submitted && f['dayMultiplier'].errors) {
+            <mat-error class="invalid-feedback">
+              @if(f['dayMultiplier'].hasError('format')) { Only whole numbers
+              allowed }
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label class="form-label">Tagesthreshold</label>
+            <input
+              matInput
+              formControlName="dayThreshold"
+              class="form-control"
+              (change)="onChange()"
+              placeholder="Erst ab X Tage Reisedauer relevant"
+            />
+            @if(submitted && f['dayThreshold'].errors) {
+            <mat-error class="invalid-feedback">
+              @if(f['dayThreshold'].hasError('format')) { Only whole numbers
+              allowed }
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle
+            class="slidetoggle"
+            formControlName="weatherRelevanceChecked"
+            >Nur für bestimmte Wetter relevant</mat-slide-toggle
+          >
+          @if (f['weatherRelevanceChecked'].getRawValue()) {
+          <ul>
+            @for(weather of relevantWeathers(); track weather.key) {
+            <li>
+              <mat-checkbox
+                [checked]="weather.checked"
+                [formControl]="newFormControl(weather.key, this.form)"
+              >
+                {{ weather.name }}
+              </mat-checkbox>
+            </li>
+
+            }
+          </ul>
+          }
+        </div>
+      </div>
+      <div class="row slidetoggle">
+        <div class="col">
+          <mat-slide-toggle formControlName="onlyIfWeekday" color="primary">
+            Nur für Reisen mit Wochentagen
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="row slidetoggle">
+        <div class="col">
+          <mat-slide-toggle formControlName="onlyIfAbroad" color="primary">
+            Nur für Reisen ins Ausland
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="row slidetoggle">
+        <div class="col">
+          <mat-slide-toggle formControlName="afterReturn" color="primary">
+            Am Tag nach der Rückkehr
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div class="row slidetoggle">
+        <div class="col">
+          <mat-slide-toggle formControlName="addTripNameToTask" color="primary">
+            Name der Reise zum Task hinzufügen
+          </mat-slide-toggle>
+        </div>
+      </div>
+      @if (!f['afterReturn'].getRawValue()) {
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label class="form-label">Verschiebung um x Tage zu Abreise</label>
+            <input
+              matInput
+              formControlName="dueShift"
+              class="form-control"
+              (change)="onChange()"
+              placeholder="Anzahl Tage X (positiv/negativ)"
+            />
+            @if(submitted && f['dueShift'].errors) {
+            <mat-error class="invalid-feedback">
+              @if(f['dueShift'].hasError('format')) { Only whole numbers allowed
+              }
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      }
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <label class="form-label">Zusätzliche Todoist Labels</label>
+            <mat-chip-grid #reactiveChipGrid formControlName="additionalLabels">
+              @for (keyword of additionalLabels(); track keyword) {
+              <mat-chip-row (removed)="removeAdditionalLabel(keyword)">
+                {{ keyword }}
+                <button
+                  matChipRemove
+                  aria-label="'remove reactive form' + keyword"
+                >
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              }
+            </mat-chip-grid>
+            <input
+              placeholder="Neues Label..."
+              [matChipInputFor]="reactiveChipGrid"
+              (matChipInputTokenEnd)="addAdditionalLabel($event)"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+} @else {
+<mat-spinner></mat-spinner>
+}

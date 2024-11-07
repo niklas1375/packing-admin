@@ -1,0 +1,41 @@
+.full-width {
+    width: 100%;
+}
+
+.packinglist-card {
+    min-width: 600px;
+    margin: 20px auto;
+}
+
+.mat-radio-button {
+    display: block;
+    margin: 5px 0;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.col {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.col:last-child {
+    margin-right: 0;
+}
+
+mat-slide-toggle {
+    margin: 8px 0;
+    display: block;
+}
+
+ul {
+    list-style-type: none;
+    // margin-top: 15px;
+}
+
+li {
+    margin-top: 8px;
+}

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ValueHelpPackinglist } from '../types/value-help-packinglist';
 import { PackingList } from '../types/packing-list';
 import { PackingItem } from '../types/packing-item';
+import { ValueHelpWeather } from '../types/value-help-weather';
 
 @Injectable({
   providedIn: 'root',
@@ -97,23 +98,49 @@ export class PackingHelperService {
   }
 
   // packing item methods
-  updatePackingItemOnList(listId: string, itemId: string, value: Partial<PackingItem>) {
+
+  getPackingItem(itemId: string, listId: string): Observable<PackingItem> {
     return this.http
-      .patch<PackingItem>(this.BASE_PATH + `/packinglists/${listId}/items/${itemId}`, value, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      .get<PackingItem>(
+        this.BASE_PATH + `/packinglists/${listId}/items/${itemId}`
+      )
       .pipe(
         catchError(
-          this.handleError<PackingList>(`patch /packinglists/${listId}/items/${itemId}`, undefined)
+          this.handleError<PackingItem>(
+            `get /packinglists/${listId}/items/${itemId}`,
+            undefined
+          )
+        )
+      );
+  }
+
+  updatePackingItemOnList(
+    listId: string,
+    itemId: string,
+    value: Partial<PackingItem>
+  ) {
+    return this.http
+      .patch<PackingItem>(
+        this.BASE_PATH + `/packinglists/${listId}/items/${itemId}`,
+        value,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .pipe(
+        catchError(
+          this.handleError<PackingList>(
+            `patch /packinglists/${listId}/items/${itemId}`,
+            undefined
+          )
         )
       );
   }
 
   createPackingItemForList(listId: string, value: Partial<PackingItem>) {
-    const path =
-      this.BASE_PATH + `/packinglists/${listId}/items`;
+    const path = this.BASE_PATH + `/packinglists/${listId}/items`;
     return this.http
       .post<PackingItem>(path, value, {
         headers: {
@@ -122,7 +149,10 @@ export class PackingHelperService {
       })
       .pipe(
         catchError(
-          this.handleError<PackingItem>(`post /packinglists/${listId}/items`, undefined)
+          this.handleError<PackingItem>(
+            `post /packinglists/${listId}/items`,
+            undefined
+          )
         )
       );
   }
@@ -136,6 +166,18 @@ export class PackingHelperService {
             `delete /packinglists/${listId}/items/${itemId}`,
             undefined
           )
+        )
+      );
+  }
+
+  // others
+
+  getWeathers(): Observable<ValueHelpWeather[]> {
+    return this.http
+      .get<ValueHelpWeather[]>(this.BASE_PATH + '/weather')
+      .pipe(
+        catchError(
+          this.handleError<ValueHelpWeather[]>(`get /weather`, [])
         )
       );
   }
