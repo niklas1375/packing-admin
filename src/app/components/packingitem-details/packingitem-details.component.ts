@@ -1,4 +1,4 @@
-import { Component, Signal, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable } from 'rxjs';
@@ -19,7 +19,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AsyncPipe } from '@angular/common';
 import { ValueHelpWeather } from '../../types/value-help-weather';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,7 +36,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatSlideToggleModule,
     MatCheckboxModule,
-    AsyncPipe,
     MatChipsModule,
     MatIconModule,
   ],
@@ -47,7 +45,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class PackingitemDetailsComponent {
   packingListItem$!: Observable<PackingItem>;
   weathers$!: Observable<ValueHelpWeather[]>;
-  relevantWeathers = signal<ValueHelpWeather[]>([]);
+  isWeatherRelevant = signal(false);
   additionalLabels = signal<string[]>([]);
   form!: FormGroup;
   listid?: string;
@@ -86,13 +84,18 @@ export class PackingitemDetailsComponent {
       category: ['', Validators.required],
       dayMultiplier: [''],
       dayThreshold: [''],
-      onlyIfWeekday: [''],
-      onlyIfAbroad: [''],
-      weatherRelevanceChecked: [''],
-      afterReturn: [''],
+      onlyIfWeekday: [false],
+      onlyIfAbroad: [false],
+      weather: this.formBuilder.group({
+        cold: [false],
+        wet: [false],
+        warm: [false],
+        sunny: [false],
+      }),
+      afterReturn: [false],
       dueShift: [''],
       additionalLabels: [''],
-      addTripNameToTask: [''],
+      addTripNameToTask: [false],
     });
 
     // remove pseudo item from additionalLabels Signal
@@ -128,24 +131,48 @@ export class PackingitemDetailsComponent {
         packingItem.relevantForWeather.length > 0,
     });
     this.weathers$.subscribe((weathers) => {
-      weathers = weathers.map((weather) => {
-        if (!packingItem.relevantForWeather) {
-          weather.checked = false;
-          return weather;
-        }
-        weather.checked =
-          packingItem.relevantForWeather.indexOf(weather.key) >= 0;
+      if (!packingItem.relevantForWeather) {
+        this.isWeatherRelevant.update((_) => false);
+        return;
+      }
+      this.isWeatherRelevant.update((_) => true);
+      const weather = {
+        cold: false,
+        wet: false,
+        warm: false,
+        sunny: false,
+      };
 
-        return weather;
+      weathers
+        .filter((w) => packingItem.relevantForWeather!.indexOf(w.key) >= 0)
+        .forEach((w) => {
+          switch (w.name) {
+            case 'Kaltes Wetter':
+              weather.cold = true;
+              break;
+            case 'Nasses Wetter':
+              weather.wet = true;
+              break;
+            case 'Warmes Wetter':
+              weather.warm = true;
+              break;
+            case 'Sonniges Wetter':
+              weather.sunny = true;
+              break;
+
+            default:
+              break;
+          }
+        });
+      this.form.patchValue({
+        weather: weather,
       });
-      this.relevantWeathers.update(_ => {
-        return [...weathers];
-      })
     });
   }
 
-  newFormControl(key: string, formGroup: FormGroup): FormControl {
-    return <FormControl>formGroup.registerControl(key, new FormControl());
+  newFormControl(key: string, formGroup: FormGroup): string {
+    formGroup.registerControl(key, new FormControl());
+    return key;
   }
 
   get f() {

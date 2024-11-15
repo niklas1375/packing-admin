@@ -87,25 +87,33 @@
         </div>
       </div>
       <div class="row">
-        <div class="col">
-          <mat-slide-toggle
-            class="slidetoggle"
-            formControlName="weatherRelevanceChecked"
+        <div class="col" formGroupName="weather">
+          <mat-slide-toggle class="slidetoggle" [checked]="isWeatherRelevant"
+          (change)="isWeatherRelevant.set($event.checked)"
             >Nur für bestimmte Wetter relevant</mat-slide-toggle
           >
-          @if (f['weatherRelevanceChecked'].getRawValue()) {
+          @if (isWeatherRelevant()) {
           <ul>
-            @for(weather of relevantWeathers(); track weather.key) {
             <li>
-              <mat-checkbox
-                [checked]="weather.checked"
-                [formControl]="newFormControl(weather.key, this.form)"
-              >
-                {{ weather.name }}
+              <mat-checkbox formControlName="cold">
+                Kaltes Wetter
               </mat-checkbox>
             </li>
-
-            }
+            <li>
+              <mat-checkbox formControlName="wet">
+                Nasses Wetter
+              </mat-checkbox>
+            </li>
+            <li>
+              <mat-checkbox formControlName="warm">
+                Warmes Wetter
+              </mat-checkbox>
+            </li>
+            <li>
+              <mat-checkbox formControlName="sunny">
+                Sonniges Wetter
+              </mat-checkbox>
+            </li>
           </ul>
           }
         </div>
