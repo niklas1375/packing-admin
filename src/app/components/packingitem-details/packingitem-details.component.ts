@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { PackingItem } from '../../types/packing-item';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -168,11 +167,6 @@ export class PackingitemDetailsComponent {
         weather: weather,
       });
     });
-  }
-
-  newFormControl(key: string, formGroup: FormGroup): string {
-    formGroup.registerControl(key, new FormControl());
-    return key;
   }
 
   get f() {
