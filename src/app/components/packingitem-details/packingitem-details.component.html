@@ -88,29 +88,31 @@
       </div>
       <div class="row">
         <div class="col" formGroupName="weather">
-          <mat-slide-toggle class="slidetoggle" [checked]="isWeatherRelevant"
-          (change)="isWeatherRelevant.set($event.checked)"
+          <mat-slide-toggle
+            class="slidetoggle"
+            [checked]="isWeatherRelevant"
+            (change)="isWeatherRelevant.set($event.checked)"
             >Nur für bestimmte Wetter relevant</mat-slide-toggle
           >
           @if (isWeatherRelevant()) {
           <ul>
             <li>
-              <mat-checkbox formControlName="cold">
+              <mat-checkbox formControlName="cold" (change)="onChange()">
                 Kaltes Wetter
               </mat-checkbox>
             </li>
             <li>
-              <mat-checkbox formControlName="wet">
+              <mat-checkbox formControlName="wet" (change)="onChange()">
                 Nasses Wetter
               </mat-checkbox>
             </li>
             <li>
-              <mat-checkbox formControlName="warm">
+              <mat-checkbox formControlName="warm" (change)="onChange()">
                 Warmes Wetter
               </mat-checkbox>
             </li>
             <li>
-              <mat-checkbox formControlName="sunny">
+              <mat-checkbox formControlName="sunny" (change)="onChange()">
                 Sonniges Wetter
               </mat-checkbox>
             </li>
@@ -120,28 +122,44 @@
       </div>
       <div class="row slidetoggle">
         <div class="col">
-          <mat-slide-toggle formControlName="onlyIfWeekday" color="primary">
+          <mat-slide-toggle
+            formControlName="onlyIfWeekday"
+            color="primary"
+            (change)="onChange()"
+          >
             Nur für Reisen mit Wochentagen
           </mat-slide-toggle>
         </div>
       </div>
       <div class="row slidetoggle">
         <div class="col">
-          <mat-slide-toggle formControlName="onlyIfAbroad" color="primary">
+          <mat-slide-toggle
+            formControlName="onlyIfAbroad"
+            color="primary"
+            (change)="onChange()"
+          >
             Nur für Reisen ins Ausland
           </mat-slide-toggle>
         </div>
       </div>
       <div class="row slidetoggle">
         <div class="col">
-          <mat-slide-toggle formControlName="afterReturn" color="primary">
+          <mat-slide-toggle
+            formControlName="afterReturn"
+            color="primary"
+            (change)="onChange()"
+          >
             Am Tag nach der Rückkehr
           </mat-slide-toggle>
         </div>
       </div>
       <div class="row slidetoggle">
         <div class="col">
-          <mat-slide-toggle formControlName="addTripNameToTask" color="primary">
+          <mat-slide-toggle
+            formControlName="addTripNameToTask"
+            color="primary"
+            (change)="onChange()"
+          >
             Name der Reise zum Task hinzufügen
           </mat-slide-toggle>
         </div>
