@@ -172,7 +172,7 @@
         <div class="col">
           <mat-form-field class="full-width">
             <label class="form-label">Zusätzliche Todoist Labels</label>
-            <mat-chip-grid #reactiveChipGrid formControlName="additionalLabels">
+            <mat-chip-grid #reactiveChipGrid>
               @for (keyword of additionalLabels(); track keyword) {
               <mat-chip-row (removed)="removeAdditionalLabel(keyword)">
                 {{ keyword }}
@@ -195,6 +195,17 @@
       </div>
     </form>
   </mat-card-content>
+  <mat-card-actions align="end">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      form="packingitemForm"
+      [disabled]="submitting || !changed"
+    >
+      @if(!!itemcategory) { Erstellen } @else { Speichern }
+    </button>
+  </mat-card-actions>
 </mat-card>
 } @else {
 <mat-spinner></mat-spinner>

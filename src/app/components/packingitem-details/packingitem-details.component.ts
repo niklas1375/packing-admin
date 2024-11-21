@@ -21,6 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ValueHelpWeather } from '../../types/value-help-weather';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-packingitem-details',
@@ -69,6 +70,7 @@ export class PackingitemDetailsComponent {
     private packingBackend: PackingHelperService,
     private route: ActivatedRoute,
     private appService: AppService,
+    private snackBar: MatSnackBar,
     private router: Router
   ) {}
 
@@ -93,18 +95,16 @@ export class PackingitemDetailsComponent {
       }),
       afterReturn: [false],
       dueShift: [''],
-      additionalLabels: [''],
       addTripNameToTask: [false],
     });
 
     // remove pseudo item from additionalLabels Signal
-    this.additionalLabels.update((_) => {
-      return [];
-    });
+    this.additionalLabels.set([]);
 
     // 'new' route is matched 'packinglist/:listid/items/new/:category'
     if (this.itemcategory) {
       this.f['category'].patchValue(this.itemcategory);
+      this.isWeatherRelevant.set(false);
       return;
     }
 
@@ -124,17 +124,15 @@ export class PackingitemDetailsComponent {
   }
 
   private _setUpWeatherRelevance(packingItem: PackingItem) {
-    this.form.patchValue({
-      weatherRelevanceChecked:
-        packingItem.relevantForWeather &&
-        packingItem.relevantForWeather.length > 0,
-    });
     this.weathers$.subscribe((weathers) => {
-      if (!packingItem.relevantForWeather) {
-        this.isWeatherRelevant.update((_) => false);
+      if (
+        !packingItem.relevantForWeather ||
+        packingItem.relevantForWeather.length <= 0
+      ) {
+        this.isWeatherRelevant.set(false);
         return;
       }
-      this.isWeatherRelevant.update((_) => true);
+      this.isWeatherRelevant.set(false);
       const weather = {
         cold: false,
         wet: false,
@@ -200,5 +198,55 @@ export class PackingitemDetailsComponent {
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.submitted = true;
+
+    if (this.form.invalid) {
+      this.snackBar.open('Es fehlt Name und/oder Kategorie');
+      return;
+    }
+
+    this.submitting = true;
+    const returnItem$: Observable<PackingItem> | undefined =
+      this.savePackingItem();
+    if (!returnItem$) return;
+    if (!!this.itemcategory) {
+      returnItem$.subscribe((packingItem) => {
+        this.router.navigate([
+          `/packinglist/${this.listid}/items/${packingItem.item_id}`,
+        ]);
+      });
+    } else {
+      window.location.reload();
+    }
+  }
+
+  private savePackingItem() {
+    if (!this.form.value['name'] || !this.form.value['category']) {
+      this.snackBar.open('Es fehlt Name und/oder Typ');
+      return;
+    }
+    const copyObject = Object.assign({}, this.form.value);
+    const weatherObject = Object.assign({}, copyObject.weather);
+    delete copyObject.weather;
+    const newPackingItem: PackingItem = copyObject;
+    if (!newPackingItem.dueShift || copyObject.dueShift === '') {
+      delete newPackingItem.dueShift;
+    }
+    newPackingItem.relevantForWeather = Object.keys(weatherObject).filter(
+      (weatherKey) => weatherObject[weatherKey]
+    );
+    newPackingItem.additionalLabels = this.additionalLabels();
+
+    return !!this.itemcategory
+      ? this.packingBackend.createPackingItemForList(
+          this.listid!,
+          newPackingItem
+        )
+      : this.packingBackend.updatePackingItemOnList(
+          this.listid!,
+          this.itemid!,
+          newPackingItem
+        );
+  }
 }

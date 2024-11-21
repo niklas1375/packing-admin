@@ -131,7 +131,7 @@ export class PackingHelperService {
       )
       .pipe(
         catchError(
-          this.handleError<PackingList>(
+          this.handleError<PackingItem>(
             `patch /packinglists/${listId}/items/${itemId}`,
             undefined
           )
