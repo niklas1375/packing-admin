@@ -98,9 +98,6 @@ export class PackingitemDetailsComponent {
       addTripNameToTask: [false],
     });
 
-    // remove pseudo item from additionalLabels Signal
-    this.additionalLabels.set([]);
-
     // 'new' route is matched 'packinglist/:listid/items/new/:category'
     if (this.itemcategory) {
       this.f['category'].patchValue(this.itemcategory);
@@ -116,6 +113,7 @@ export class PackingitemDetailsComponent {
     this.packingListItem$.subscribe((packingItem) => {
       this.form.patchValue(packingItem);
       this._setUpWeatherRelevance(packingItem);
+      this.additionalLabels.set(packingItem.additionalLabels || []);
       this.loading = false;
       this.appService.setTitle(
         `Packitem ${packingItem.name} (${packingItem.category})`
@@ -180,6 +178,7 @@ export class PackingitemDetailsComponent {
 
     // Add our keyword
     if (value) {
+      this.changed = true;
       this.additionalLabels.update((labels) => [...labels, value]);
     }
 
@@ -188,6 +187,7 @@ export class PackingitemDetailsComponent {
   }
 
   removeAdditionalLabel(keyword: string) {
+    this.changed = true;
     this.additionalLabels.update((labels) => {
       const index = labels.indexOf(keyword);
       if (index < 0) {
@@ -217,7 +217,9 @@ export class PackingitemDetailsComponent {
         ]);
       });
     } else {
-      window.location.reload();
+      returnItem$.subscribe(() => {
+        window.location.reload();
+      });
     }
   }
 
