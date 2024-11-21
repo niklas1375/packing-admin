@@ -15,17 +15,17 @@
           >{{ simplePackingList.name }}</a
         >
       </div>
-      <button
-        mat-icon-button
-        (click)="onPackingListDelete(simplePackingList)"
-      >
+      @if(packingListType !== "basics") {
+      <button mat-icon-button (click)="onPackingListDelete(simplePackingList)">
         <mat-icon>delete</mat-icon>
       </button>
+      }
     </div>
   </mat-list-item>
   }
 </mat-list>
 
+@if(packingListType !== "basics") {
 <button
   mat-raised-button
   color="primary"
@@ -34,3 +34,4 @@
   <mat-icon>add</mat-icon>
   Packliste erstellen
 </button>
+}
