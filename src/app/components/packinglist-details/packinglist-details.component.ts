@@ -149,7 +149,11 @@ export class PackinglistDetailsComponent {
       `Packitem ${item.name} von Liste ${this.f['name'].getRawValue()} löschen?`
     );
     if (!canDelete) return;
-    this.packingBackend.deletePackingItemFromList(this.listid!, item.item_id);
+    this.packingBackend
+      .deletePackingItemFromList(this.listid!, item.item_id)
+      .subscribe(() => {
+        window.location.reload();
+      });
   }
 
   get f() {
@@ -177,7 +181,9 @@ export class PackinglistDetailsComponent {
         this.router.navigate(['/packinglist/' + packingList.id]);
       });
     } else {
-      window.location.reload();
+      returnItem$.subscribe(() => {
+        window.location.reload();
+      });
     }
   }
 
