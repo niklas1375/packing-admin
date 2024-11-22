@@ -83,8 +83,8 @@ export class PackingitemDetailsComponent {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       category: ['', Validators.required],
-      dayMultiplier: [null, Validators.pattern('^\-?[0-9]*$')],
-      dayThreshold: [null, Validators.pattern('^\-?[0-9]*$')],
+      dayMultiplier: [undefined, Validators.pattern('^\-?[0-9]*$')],
+      dayThreshold: [undefined, Validators.pattern('^\-?[0-9]*$')],
       onlyIfWeekday: [false],
       onlyIfAbroad: [false],
       weather: this.formBuilder.group({
@@ -94,7 +94,7 @@ export class PackingitemDetailsComponent {
         sunny: [false],
       }),
       afterReturn: [false],
-      dueShift: [null, Validators.pattern('^\-?[0-9]*$')],
+      dueShift: [undefined, Validators.pattern('^\-?[0-9]*$')],
       addTripNameToTask: [false],
     });
 
