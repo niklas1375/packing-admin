@@ -92,7 +92,7 @@
         <div class="col" formGroupName="weather">
           <mat-slide-toggle
             class="slidetoggle"
-            [checked]="isWeatherRelevant"
+            [checked]="isWeatherRelevant()"
             (change)="isWeatherRelevant.set($event.checked)"
             >Nur für bestimmte Wetter relevant</mat-slide-toggle
           >

@@ -1,7 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Observable } from 'rxjs';
+import { concat, Observable } from 'rxjs';
 import { PackingItem } from '../../types/packing-item';
 import {
   FormBuilder,
