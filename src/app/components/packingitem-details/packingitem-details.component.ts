@@ -83,8 +83,8 @@ export class PackingitemDetailsComponent {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       category: ['', Validators.required],
-      dayMultiplier: [''],
-      dayThreshold: [''],
+      dayMultiplier: [null, Validators.pattern('^\-?[0-9]*$')],
+      dayThreshold: [null, Validators.pattern('^\-?[0-9]*$')],
       onlyIfWeekday: [false],
       onlyIfAbroad: [false],
       weather: this.formBuilder.group({
@@ -94,7 +94,7 @@ export class PackingitemDetailsComponent {
         sunny: [false],
       }),
       afterReturn: [false],
-      dueShift: [''],
+      dueShift: [null, Validators.pattern('^\-?[0-9]*$')],
       addTripNameToTask: [false],
     });
 
@@ -122,46 +122,25 @@ export class PackingitemDetailsComponent {
   }
 
   private _setUpWeatherRelevance(packingItem: PackingItem) {
-    this.weathers$.subscribe((weathers) => {
-      if (
-        !packingItem.relevantForWeather ||
-        packingItem.relevantForWeather.length <= 0
-      ) {
-        this.isWeatherRelevant.set(false);
-        return;
-      }
+    if (
+      !packingItem.relevantForWeather ||
+      packingItem.relevantForWeather.length <= 0
+    ) {
       this.isWeatherRelevant.set(false);
-      const weather = {
-        cold: false,
-        wet: false,
-        warm: false,
-        sunny: false,
-      };
-
-      weathers
-        .filter((w) => packingItem.relevantForWeather!.indexOf(w.key) >= 0)
-        .forEach((w) => {
-          switch (w.name) {
-            case 'Kaltes Wetter':
-              weather.cold = true;
-              break;
-            case 'Nasses Wetter':
-              weather.wet = true;
-              break;
-            case 'Warmes Wetter':
-              weather.warm = true;
-              break;
-            case 'Sonniges Wetter':
-              weather.sunny = true;
-              break;
-
-            default:
-              break;
-          }
-        });
-      this.form.patchValue({
-        weather: weather,
-      });
+      return;
+    }
+    this.isWeatherRelevant.set(true);
+    const weather = {
+      cold: false,
+      wet: false,
+      warm: false,
+      sunny: false,
+    };
+    Object.keys(weather).forEach((key) => {
+      (weather as any)[key] = packingItem.relevantForWeather!.indexOf(key) > -1;
+    });
+    this.form.patchValue({
+      weather: weather,
     });
   }
 
