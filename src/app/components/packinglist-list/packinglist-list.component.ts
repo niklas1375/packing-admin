@@ -10,17 +10,16 @@ import { AppService } from '../../services/app.service';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-packinglist-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
-  templateUrl: './packinglist-list.component.html',
-  styleUrl: './packinglist-list.component.scss',
+    selector: 'app-packinglist-list',
+    imports: [
+        CommonModule,
+        RouterLink,
+        MatListModule,
+        MatIconModule,
+        MatButtonModule,
+    ],
+    templateUrl: './packinglist-list.component.html',
+    styleUrl: './packinglist-list.component.scss'
 })
 export class PackinglistListComponent {
   packingLists$!: Observable<ValueHelpPackinglist[]>;

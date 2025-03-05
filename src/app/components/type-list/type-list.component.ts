@@ -9,11 +9,10 @@ import { RouterLink } from '@angular/router';
 import { AppService } from '../../services/app.service';
 
 @Component({
-  selector: 'app-type-list',
-  standalone: true,
-  imports: [MatListModule, MatIconModule, CommonModule, RouterLink],
-  templateUrl: './type-list.component.html',
-  styleUrl: './type-list.component.scss',
+    selector: 'app-type-list',
+    imports: [MatListModule, MatIconModule, CommonModule, RouterLink],
+    templateUrl: './type-list.component.html',
+    styleUrl: './type-list.component.scss'
 })
 export class TypeListComponent {
   packinglistTypes$!: Observable<PackingListType[]>;

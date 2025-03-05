@@ -6,11 +6,10 @@ import { AsyncPipe } from '@angular/common';
 import { delay, Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, MatToolbar, AsyncPipe],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [RouterOutlet, MatToolbar, AsyncPipe],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title$!: Observable<String>;

@@ -24,23 +24,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-packingitem-details',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatSlideToggleModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatIconModule,
-  ],
-  templateUrl: './packingitem-details.component.html',
-  styleUrl: './packingitem-details.component.scss',
+    selector: 'app-packingitem-details',
+    imports: [
+        MatCardModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatSlideToggleModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatIconModule,
+    ],
+    templateUrl: './packingitem-details.component.html',
+    styleUrl: './packingitem-details.component.scss'
 })
 export class PackingitemDetailsComponent {
   packingListItem$!: Observable<PackingItem>;

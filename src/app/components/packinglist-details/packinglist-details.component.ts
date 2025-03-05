@@ -26,25 +26,24 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-packinglist-details',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    MatListModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatSnackBarModule,
-    AsyncPipe,
-    EllipsisPipe,
-    RouterLink,
-  ],
-  templateUrl: './packinglist-details.component.html',
-  styleUrl: './packinglist-details.component.scss',
+    selector: 'app-packinglist-details',
+    imports: [
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        MatListModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatSnackBarModule,
+        AsyncPipe,
+        EllipsisPipe,
+        RouterLink,
+    ],
+    templateUrl: './packinglist-details.component.html',
+    styleUrl: './packinglist-details.component.scss'
 })
 export class PackinglistDetailsComponent {
   packingList$!: Observable<PackingList>;
